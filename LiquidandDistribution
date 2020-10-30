@@ -1,0 +1,1093 @@
+@model IEnumerable<SmartFile.ViewModels.LNDViewModel>
+@{
+    ViewBag.Title = "LiquidDistributionPDF";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+        th, td, tr {
+            padding: 5px;
+            text-align: left;
+            border-bottom-style: hidden;
+            border-top-style: hidden;
+            border-left-style: hidden;
+        }
+
+        #td1, #td2, #td3{
+            border-right-style:hidden;
+        }
+
+        tr, td {
+            page-break-after: always;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#table1 td").each(function () {
+                var cellText = $(this).text();
+                if ($.trim(cellText) == '') {
+                    $(this).css('background-color', 'white');
+                }
+            });
+
+            var $rowsNo = $('#table1 tbody tr').filter(function () {
+                return $.trim($(this).find('td').eq(2).text()) === "0"
+            }).toggle();
+
+            //$("#table1 tr td").each(function () {
+            //    var cell = $.trim($(this).text());
+            //    if (cell.length == 0 && cell:contains) {
+            //        $(this).parent().hide();
+            //    }
+            //});
+        });
+
+
+    </script>
+</head>
+<body>
+
+    <hr />
+
+@if (ViewBag.regime == "ANC-Without Accrual" || ViewBag.regime == "Widowed" || ViewBag.status == "Unmarried")
+{
+    foreach (var item in Model.Take(1))
+    {
+        if (item.MaritalStatus == "Married")
+        {
+            <div>
+                <center><p>FIRST AND FINAL LIQUIDATION AND DISTRIBUTION ACCOUNT IN THE ESTATE OF THE LATE</p></center>
+                <center><p style="font-weight:bold;color:black">@Html.DisplayFor(model => item.EstateLate)</p></center>
+                <center><p>(IDENTITY NO. @Html.DisplayFor(model => item.IDNumber)) AND TO WHOM WAS MARRIED @Html.DisplayFor(model => item.MaritalRegime) OF</p></center>
+                <center><p>PROPERTY OF 7 CONSTANTIA GARDENS, 5 RIVERPLATE ROAD, MALVERN, 4093 WHO DIED ON @Html.DisplayFor(model => item.DateOfDeath)</p></center>
+                <center><p style="font-weight:bold;color:black">ESTATE NUMBER: 123456789</p></center>
+            </div>
+            <br />
+        }
+        else
+        {
+            <div>
+                <center><p>FIRST AND FINAL LIQUIDATION AND DISTRIBUTION ACCOUNT IN THE ESTATE OF THE LATE</p></center>
+                <center><p style="font-weight:bold;color:black">@Html.DisplayFor(model => item.EstateLate)</p></center>
+                <center><p>(IDENTITY NO. @Html.DisplayFor(model => item.IDNumber)) OF</p></center>
+                <center><p>PROPERTY OF 7 CONSTANTIA GARDENS, 5 RIVERPLATE ROAD, MALVERN, 4093 WHO DIED ON @Html.DisplayFor(model => item.DateOfDeath)</p></center>
+                <center><p style="font-weight:bold;color:black">ESTATE NUMBER: 123456789</p></center>
+            </div>
+            <br />
+        }
+    }
+
+
+    <table style="width:100%" border="1" id="table1">
+        <tr>
+            <th style="text-decoration:underline;font-weight:bold;font-size:x-large;padding-bottom:25px;padding-left:150px;font-family:Calibri">LIQUIDATION ACCOUNT</th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th style="text-decoration:underline;font-weight:bold;font-size:x-large;padding-bottom:25px;padding-left:220px;font-family:Calibri">ASSETS</th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.Property1 != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">IMMOVABLE PROPERTY - AWARDED AS PER DISTRIBUTION ACCOUNT</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            if (item.Property1 != null && item.Property2 != null && item.Property3 != null && item.Property4 != null)
+            {
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property1)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue1)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property2)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue2)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property3)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue3)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property4)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue4)</td>
+                    <td style="width:10%" id="td1">@ViewBag.prop</td>
+                </tr>
+            }
+            else if (item.Property1 != null && item.Property2 == null && item.Property3 == null && item.Property4 == null)
+            {
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property1)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue1)</td>
+                    <td style="width:10%" id="td1">@ViewBag.prop</td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property2)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue2)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property3)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue3)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property4)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue4)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+            }
+            else if (item.Property1 != null && item.Property2 != null && item.Property3 == null && item.Property4 == null)
+            {
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property1)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue1)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property2)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue2)</td>
+                    <td style="width:10%" id="td1">@ViewBag.prop</td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property3)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue3)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property4)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue4)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+            }
+            else if (item.Property1 != null && item.Property2 != null && item.Property3 != null && item.Property4 == null)
+            {
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property1)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue1)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property2)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue2)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property3)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue3)</td>
+                    <td style="width:10%" id="td1">@ViewBag.prop</td>
+                </tr>
+                <tr>
+                    <td style="width:42%">@Html.DisplayFor(model => item.Property4)</td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue4)</td>
+                    <td style="width:10%" id="td1"></td>
+                </tr>
+            }
+        }
+        @*@foreach (var item in Model.Take(1))
+        {
+            if (item.Property1 != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.prop</td>
+                </tr>
+            }
+        }*@
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.HusbandGunName != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">MOVABLE PROPERTY - AWARDED AS PER DISTRIBUTION ACCOUNT</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName1) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName2) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName3) - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+
+
+
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest)  - @Html.DisplayFor(model => item.HusbandNameOfEntity) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest1) - @Html.DisplayFor(model => item.HusbandNameOfEntity1)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest2) - @Html.DisplayFor(model => item.HusbandNameOfEntity2)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest3) - @Html.DisplayFor(model => item.HusbandNameOfEntity3)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+
+
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.HusbandGunName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.HusbandTotalClaimsPayable</td>
+                </tr>
+            }
+        }
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null || item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">CLAIMS IN FAVOUR OF THE ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">BANK SAVINGS AND INVESTMENTS</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName1) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount1) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName2) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount2) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName3) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount3) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.sum2</td>
+                </tr>
+            }
+        }
+
+
+
+
+
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">ACCOUNTS RECEIVABLE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName)   @Html.DisplayFor(model => item.AccountsReceivableIntrest) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName1)   @Html.DisplayFor(model => item.AccountsReceivableIntrest1) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName2)   @Html.DisplayFor(model => item.AccountsReceivableIntrest2) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName3)   @Html.DisplayFor(model => item.AccountsReceivableIntrest3) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.sum</td>
+                </tr>
+            }
+        }
+    </table>
+}
+else
+{
+    foreach (var item in Model.Take(1))
+    {
+        if (item.MaritalStatus == "Married")
+        {
+            <div>
+                <center><p>FIRST AND FINAL LIQUIDATION AND DISTRIBUTION ACCOUNT IN THE ESTATE OF THE LATE</p></center>
+                <center><p style="font-weight:bold;color:black">@Html.DisplayFor(model => item.EstateLate)</p></center>
+                <center><p>(IDENTITY NO. @Html.DisplayFor(model => item.IDNumber)) AND TO WHOM WAS MARRIED @Html.DisplayFor(model => item.MaritalRegime) OF</p></center>
+                <center><p>PROPERTY OF 7 CONSTANTIA GARDENS, 5 RIVERPLATE ROAD, MALVERN, 4093 WHO DIED ON @Html.DisplayFor(model => item.DateOfDeath)</p></center>
+                <center><p style="font-weight:bold;color:black">ESTATE NUMBER: 123456789</p></center>
+            </div>
+            <br />
+        }
+        else
+        {
+            <div>
+                <p>FIRST AND FINAL LIQUIDATION AND DISTRIBUTION ACCOUNT IN THE ESTATE OF THE LATE</p>
+                <center><p style="font-weight:bold;color:black">@Html.DisplayFor(model => item.EstateLate)</p></center>
+                <p>(IDENTITY NO. @Html.DisplayFor(model => item.IDNumber)) OF</p>
+                <p>PROPERTY OF 7 CONSTANTIA GARDENS, 5 RIVERPLATE ROAD, MALVERN, 4093 WHO DIED ON @Html.DisplayFor(model => item.DateOfDeath)</p>
+                <p style="font-weight:bold;color:black">ESTATE NUMBER: 123456789</p>
+            </div>
+            <br />
+        }
+    }
+
+
+
+    <table style="width:100%" border="1" id="table1">
+        <tr>
+            <th style="text-decoration:underline;font-weight:bold;font-size:x-large;padding-bottom:25px;padding-left:150px;font-family:Calibri">LIQUIDATION ACCOUNT</th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th style="text-decoration:underline;font-weight:bold;font-size:x-large;padding-bottom:25px;padding-left:220px;font-family:Calibri">ASSETS</th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.Property1 != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">IMMOVABLE PROPERTY - AWARDED AS PER DISTRIBUTION ACCOUNT</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.Property1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">DECEASED ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.Property1)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.Property2)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.Property3)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.Property4)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AppraisersValue4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.WifeProperty1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">SURVIVING SPOUSE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeProperty1)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAppraisersValue1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeProperty2)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAppraisersValue2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeProperty3)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAppraisersValue3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeProperty4)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAppraisersValue4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.Property1 != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.prop2</td>
+                </tr>
+            }
+        }
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="td3"></th>
+        </tr>
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.HusbandGunName != null || item.Value1 != null || item.HusbandValueOfInterest != null || item.Value1 != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">MOVABLE PROPERTY - AWARDED AS PER DISTRIBUTION ACCOUNT</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.HusbandGunName != null || item.Value1 != null || item.HusbandValueOfInterest != null || item.Value1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">DECEASED ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName1) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName2) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.HusbandGunName3) - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandGunValue3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">HOUSEHOLD FURNITURE - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.Value4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest)  - @Html.DisplayFor(model => item.HusbandNameOfEntity) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest1) - @Html.DisplayFor(model => item.HusbandNameOfEntity1)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest2) - @Html.DisplayFor(model => item.HusbandNameOfEntity2)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.HusbandValueOfInterest3) - @Html.DisplayFor(model => item.HusbandNameOfEntity3)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.HusbandLoanAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.WifeGunName != null || item.Value1 != null || item.HusbandValueOfInterest != null || item.Value1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">SURVIVING SPOUSE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.WifeGunName) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeGunValue)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.WifeGunName1) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeGunValue1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.WifeGunName2) - As per valuation </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeGunValue2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">FIREARM - @Html.DisplayFor(model => item.WifeGunName3) - As per valuation</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeGunValue3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.WifeValueOfInterest)  - @Html.DisplayFor(model => item.WifeNameOfEntity) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeLoanAccountBalance)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.WifeValueOfInterest1) - @Html.DisplayFor(model => item.WifeNameOfEntity1)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeLoanAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.WifeValueOfInterest2) - @Html.DisplayFor(model => item.WifeNameOfEntity2)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeLoanAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">BUSINESS INTERESTS @Html.DisplayFor(model => item.WifeValueOfInterest3) - @Html.DisplayFor(model => item.WifeNameOfEntity3)</td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeLoanAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.HusbandGunName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.InCommunityTotalClaimsPayable</td>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null || item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <th style="text-decoration:underline;font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">CLAIMS IN FAVOUR OF THE ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">BANK SAVINGS AND INVESTMENTS</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">DECEASED ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName1) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount1) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName2) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount2) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.SavingsInvestmentBankName3) &nbsp;@Html.DisplayFor(model => item.SavingsInvestmentTypeOfAccount3) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.SavingsInvestmentAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.WifeSavingsInvestmentBankName1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">SURVIVING SPOUSE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeSavingsInvestmentBankName1) &nbsp;@Html.DisplayFor(model => item.WifeSavingsInvestmentTypeOfAccount1)  </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeSavingsInvestmentAccountBalance1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeSavingsInvestmentBankName2) &nbsp;@Html.DisplayFor(model => item.WifeSavingsInvestmentTypeOfAccount2)  </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeSavingsInvestmentAccountBalance2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeSavingsInvestmentBankName3) &nbsp;@Html.DisplayFor(model => item.WifeSavingsInvestmentTypeOfAccount3)  </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeSavingsInvestmentAccountBalance3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeSavingsInvestmentBankName4) &nbsp;@Html.DisplayFor(model => item.WifeSavingsInvestmentTypeOfAccount4)  </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeSavingsInvestmentAccountBalance4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.SavingsInvestmentBankName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.sum4</td>
+                </tr>
+            }
+        }
+
+
+
+
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:large;padding-bottom:25px;font-family:Calibri">ACCOUNTS RECEIVABLE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">DECEASED ESTATE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName)   @Html.DisplayFor(model => item.AccountsReceivableIntrest) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName1)   @Html.DisplayFor(model => item.AccountsReceivableIntrest1) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName2)   @Html.DisplayFor(model => item.AccountsReceivableIntrest2) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.AccountsReceivableName3)   @Html.DisplayFor(model => item.AccountsReceivableIntrest3) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.AccountsReceivableAmount3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.WifeAccountsReceivableName1 != null)
+            {
+                <tr>
+                    <th style="font-weight:bold;font-size:small;padding-bottom:25px;padding-left:220px;font-family:Calibri">SURVIVING SPOUSE</th>
+                    <th></th>
+                    <th></th>
+                    <th id="td3"></th>
+                </tr>
+            }
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeAccountsReceivableName1)   @Html.DisplayFor(model => item.WifeAccountsReceivableIntrest1) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAccountsReceivableAmount1)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeAccountsReceivableName2)   @Html.DisplayFor(model => item.WifeAccountsReceivableIntrest2) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAccountsReceivableAmount2)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeAccountsReceivableName3)   @Html.DisplayFor(model => item.WifeAccountsReceivableIntrest3) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAccountsReceivableAmount3)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+            <tr>
+                <td style="width:42%">@Html.DisplayFor(model => item.WifeAccountsReceivableName4)   @Html.DisplayFor(model => item.WifeAccountsReceivableIntrest4) </td>
+                <td style="width:1%"></td>
+                <td style="width:10%">@Html.DisplayFor(model => item.WifeAccountsReceivableAmount4)</td>
+                <td style="width:10%" id="td1"></td>
+            </tr>
+        }
+        @foreach (var item in Model.Take(1))
+        {
+            if (item.AccountsReceivableName != null)
+            {
+                <tr>
+                    <td style="width:42%"></td>
+                    <td style="width:1%"></td>
+                    <td style="width:10%"></td>
+                    <td style="width:10%" id="td2">@ViewBag.sum3</td>
+                </tr>
+            }
+        }
+
+
+
+
+    </table>
+
+}
+
+</body>
+</html>
+
+
